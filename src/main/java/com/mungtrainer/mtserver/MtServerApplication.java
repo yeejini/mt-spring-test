@@ -8,7 +8,6 @@ public class MtServerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MtServerApplication.class, args);
-
 	}
 
 }
