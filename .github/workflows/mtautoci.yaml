@@ -3,7 +3,7 @@ name: CI - Build & Push Image + Update Manifest Repo
 on:
   push:
     branches:
-      - develop
+      - main
 
 jobs:
   ci:
