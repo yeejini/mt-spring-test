@@ -3,7 +3,9 @@ package com.mungtrainer.mtserver.common.config;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
+@Profile("!test")
 @Configuration
 @Getter
 public class AwsS3Config {
