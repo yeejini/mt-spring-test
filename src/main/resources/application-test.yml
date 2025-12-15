@@ -1,7 +1,7 @@
 spring:
   jwt:
-    access-secret: ci-test-access-secret
-    refresh-secret: ci-test-refresh-secret
+    access-secret: test-access-secret-01234567890123456789012345
+    refresh-secret: test-access-secret-01234567890123456789012345
     access-token-validity-in-ms: 600000
     refresh-token-validity-in-ms: 1209600000
 
