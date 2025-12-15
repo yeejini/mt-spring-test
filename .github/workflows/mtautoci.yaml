@@ -21,10 +21,10 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      # 3️⃣ Gradle Build + Test (TEST profile)
-      - name: Build & Test (test profile)
+      # 3️⃣ Gradle Build + 최소 Context 테스트
+      - name: Build & Test (Context Smoke Test)
         env:
-          # 🔥 핵심
+          # 🔥 test 프로파일 명시
           SPRING_PROFILES_ACTIVE: test
 
         run: |

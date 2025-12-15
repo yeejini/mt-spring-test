@@ -6,11 +6,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest
-class MtServerApplicationTests {
+@SpringBootTest(
+        classes = MtServerApplication.class,
+        webEnvironment = SpringBootTest.WebEnvironment.NONE
+)
+@ActiveProfiles("test")
+class ContextSmokeTest {
 
-//	@Test
-//	void contextLoads() {
-//	}
-
+    @Test
+    void contextStarts() {
+        // 최소 기동만 확인
+    }
 }
+
