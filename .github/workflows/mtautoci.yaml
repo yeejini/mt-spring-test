@@ -10,38 +10,57 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # App Repo Checkout
+      # 1️⃣ App Repo Checkout
       - name: Checkout app repository
         uses: actions/checkout@v4
 
-      # JDK 17 설치
+      # 2️⃣ JDK 17 설치
       - name: Setup JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
 
-      # Gradle Build
-      - name: Build jar
+      # 3️⃣ Gradle Build + Test (🔥 핵심 수정 부분)
+      - name: Build jar with test
+        env:
+          # 🔥 test profile 활성화 (파일 없어도 됨)
+          SPRING_PROFILES_ACTIVE: test
+
+          # 🔐 JWT (CI용 더미값)
+          SPRING_JWT_ACCESS_SECRET: ci-test-access-secret
+          SPRING_JWT_REFRESH_SECRET: ci-test-refresh-secret
+
+          # 🛢️ 테스트 DB (H2 in-memory)
+          SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb;MODE=MySQL
+          SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.h2.Driver
+          SPRING_DATASOURCE_USERNAME: sa
+          SPRING_DATASOURCE_PASSWORD:
+
+          # (선택) AWS 테스트용 더미값
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+          AWS_DEFAULT_REGION: ap-northeast-2
+
         run: |
           chmod +x ./gradlew
           ./gradlew clean build
 
-      # Docker 이미지 빌드 (commit sha tag)
+      # 4️⃣ Docker 이미지 빌드 (commit sha tag)
       - name: Docker build
         run: |
           docker build \
             -t ${{ secrets.DOCKER_USER }}/web-app:${{ github.sha }} \
             .
 
-      # DockerHub 로그인
+      # 5️⃣ DockerHub 로그인
       - name: Docker login
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      # Docker 이미지 Push
+      # 6️⃣ Docker 이미지 Push
       - name: Docker push
         run: |
           docker push ${{ secrets.DOCKER_USER }}/web-app:${{ github.sha }}
