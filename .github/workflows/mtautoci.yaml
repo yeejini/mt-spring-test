@@ -24,27 +24,30 @@ jobs:
       # 3️⃣ Gradle Build + Test (🔥 핵심 수정 부분)
       - name: Build jar with test
         env:
-          # 🔥 test profile 활성화 (파일 없어도 됨)
-          SPRING_PROFILES_ACTIVE: test
+          # 필수 공통
+          SERVER_PORT: 8080
+          SPRING_APPLICATION_NAME: mt-server
 
-          # 🔐 JWT (CI용 더미값)
+          # JWT
           SPRING_JWT_ACCESS_SECRET: ci-test-access-secret
           SPRING_JWT_REFRESH_SECRET: ci-test-refresh-secret
 
-          # 🛢️ 테스트 DB (H2 in-memory)
+          # DB (H2)
           SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb;MODE=MySQL
           SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.h2.Driver
           SPRING_DATASOURCE_USERNAME: sa
-          SPRING_DATASOURCE_PASSWORD:
+          SPRING_DATASOURCE_PASSWORD: ""
 
-          # (선택) AWS 테스트용 더미값
+          # AWS (🔥 이름 정확히!)
+          AWS_S3_BUCKET: test-bucket
           AWS_ACCESS_KEY_ID: test
           AWS_SECRET_ACCESS_KEY: test
-          AWS_DEFAULT_REGION: ap-northeast-2
+          AWS_REGION: ap-northeast-2
 
         run: |
           chmod +x ./gradlew
           ./gradlew clean build
+      
 
       # 4️⃣ Docker 이미지 빌드 (commit sha tag)
       - name: Docker build
