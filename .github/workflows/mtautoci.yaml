@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # App Repo Checkouts
+      # App Repo Checkout
       - name: Checkout app repository
         uses: actions/checkout@v4
 
