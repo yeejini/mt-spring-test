@@ -1,0 +1,32 @@
+spring:
+  jwt:
+    access-secret: ci-test-access-secret
+    refresh-secret: ci-test-refresh-secret
+    access-token-validity-in-ms: 600000
+    refresh-token-validity-in-ms: 1209600000
+
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MySQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 2
+
+mybatis:
+  type-aliases-package: com.mungtrainer.mtserver
+  type-handlers-package: com.mungtrainer.mtserver.typehandler
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/**/*.xml
+
+aws:
+  s3:
+    bucket: test-bucket
+    accessKeyId: test
+    secretAccessKey: test
+    region: ap-northeast-2
+    presigned-url:
+      expiration-minutes: 10

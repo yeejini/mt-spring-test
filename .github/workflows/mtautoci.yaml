@@ -1,4 +1,4 @@
-name: CI - Build & Push Image + Update Manifest Repo
+name: CI - Build & Push Image
 
 on:
   push:
@@ -14,40 +14,22 @@ jobs:
       - name: Checkout app repository
         uses: actions/checkout@v4
 
-      # JDK 17 설치
+      # 2️⃣ JDK 17 설치
       - name: Setup JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
 
-      # 3️⃣ Gradle Build + Test (🔥 핵심 수정 부분)
-      - name: Build jar with test
+      # 3️⃣ Gradle Build + Test (TEST profile)
+      - name: Build & Test (test profile)
         env:
-          # 필수 공통
-          SERVER_PORT: 8080
-          SPRING_APPLICATION_NAME: mt-server
-
-          # JWT
-          SPRING_JWT_ACCESS_SECRET: ci-test-access-secret
-          SPRING_JWT_REFRESH_SECRET: ci-test-refresh-secret
-
-          # DB (H2)
-          SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb;MODE=MySQL
-          SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.h2.Driver
-          SPRING_DATASOURCE_USERNAME: sa
-          SPRING_DATASOURCE_PASSWORD: ""
-
-          # AWS (🔥 이름 정확히!)
-          AWS_S3_BUCKET: test-bucket
-          AWS_ACCESS_KEY_ID: test
-          AWS_SECRET_ACCESS_KEY: test
-          AWS_REGION: ap-northeast-2
+          # 🔥 핵심
+          SPRING_PROFILES_ACTIVE: test
 
         run: |
           chmod +x ./gradlew
           ./gradlew clean build
-      
 
       # 4️⃣ Docker 이미지 빌드 (commit sha tag)
       - name: Docker build
