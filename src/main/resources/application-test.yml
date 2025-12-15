@@ -10,8 +10,8 @@ server:
 
 spring:
   jwt:
-    access-secret: test-access-secret
-    refresh-secret: test-refresh-secret
+    access-secret: 12345678901234567890123456789012
+    refresh-secret: 12345678901234567890123456789012
     access-token-validity-in-ms: 600000
     refresh-token-validity-in-ms: 1209600000
   application:
