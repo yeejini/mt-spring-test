@@ -40,6 +40,7 @@ public class SecurityConfig {
         .sessionManagement(session ->
             session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/actuator/**").permitAll()  // <-- actuator 무조건 허용
 
                                     // 인가 검증 절차 받을 api
                                    .requestMatchers("/api/trainer/**").hasAnyRole("TRAINER","ADMIN")

@@ -56,6 +56,10 @@ dependencies {
 
     // ★ H2 Database (테스트용 인메모리 DB)
     runtimeOnly 'com.h2database:h2'
+
+    // 애플리케이션의 상태를 실시간으로 확인하고 관리하는 여러 엔드포인트를 제공
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
 }
 
 tasks.named('test') {
