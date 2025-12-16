@@ -1,15 +1,15 @@
-# --------------------------
-# 1단계: 빌드
-# --------------------------
-FROM gradle:7.6-jdk17 AS builder
-
-WORKDIR /app
-
-# 소스 복사 및 권한 부여
-COPY --chown=gradle:gradle . .
-
-# Gradle 빌드 (fat jar 생성)
-RUN ./gradlew clean build -x test --no-daemon
+## --------------------------
+## 1단계: 빌드
+## --------------------------
+#FROM gradle:7.6-jdk17 AS builder
+#
+#WORKDIR /app
+#
+## 소스 복사 및 권한 부여
+#COPY --chown=gradle:gradle . .
+#
+## Gradle 빌드 (fat jar 생성)
+#RUN ./gradlew clean build -x test --no-daemon
 
 # --------------------------
 # 2단계: 런타임
