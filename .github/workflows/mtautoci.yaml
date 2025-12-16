@@ -24,12 +24,13 @@ jobs:
       # 3. Gradle 테스트 수행 (application-test.yml 사용)
       - name: Run Unit Tests
         run: |
-          # 테스트용 profile 지정
+          chmod +x ./gradlew
           ./gradlew clean test -Dspring.profiles.active=test
 
       # 4. Gradle Build (테스트 스킵, main/resources/application.yml 사용)
       - name: Build jar
         run: |
+          chmod +x ./gradlew
           ./gradlew clean build -x test --no-daemon
 
       # 5. Docker 이미지 빌드 (commit sha tag)
