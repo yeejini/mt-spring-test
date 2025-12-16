@@ -33,10 +33,10 @@ jobs:
 #          ./gradlew clean test
 
       # 5. Gradle Build (테스트 스킵, main/resources/application.yml 사용)
-      - name: Build jar
-        run: |
-          chmod +x ./gradlew
-          ./gradlew clean build -x test --no-daemon
+#      - name: Build jar
+#        run: |
+#          chmod +x ./gradlew
+#          ./gradlew clean build -x test --no-daemon
 
       # 6. Docker 이미지 빌드 (commit sha tag)
       - name: Docker build
