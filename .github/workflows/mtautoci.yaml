@@ -21,7 +21,6 @@ jobs:
           distribution: temurin
           java-version: 21
 
-
       # 4. Gradle Build (테스트 스킵, main/resources/application.yml 사용)
       - name: Build jar
         run: |
