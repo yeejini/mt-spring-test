@@ -20,7 +20,6 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-
       # 3. 테스트용 properties 파일 세팅 (CI에서만 사용)
 #      - name: Setup Test Properties
 #        run: |
