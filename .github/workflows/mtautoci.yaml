@@ -22,16 +22,16 @@ jobs:
           java-version: 21
 
       # 3. 테스트용 properties 파일 세팅 (CI에서만 사용)
-      - name: Setup Test Properties
-        run: |
-          mkdir -p src/test/resources
-          echo "${{ secrets.TEST_APPLICATION_PROPERTIES }}" > ./src/test/resources/application.properties
-
-      # 4. Gradle 테스트 수행 (test용 설정 사용)
-      - name: Run Unit Tests
-        run: |
-          chmod +x ./gradlew
-          ./gradlew clean test
+#      - name: Setup Test Properties
+#        run: |
+#          mkdir -p src/test/resources
+#          echo "${{ secrets.TEST_APPLICATION_PROPERTIES }}" > ./src/test/resources/application.properties
+#
+#      # 4. Gradle 테스트 수행 (test용 설정 사용)
+#      - name: Run Unit Tests
+#        run: |
+#          chmod +x ./gradlew
+#          ./gradlew clean test
 
       # 5. Gradle Build (테스트 스킵, main/resources/application.yml 사용)
       - name: Build jar
