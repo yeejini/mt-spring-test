@@ -3,7 +3,6 @@
 #외부 서비스: Mock 또는 테스트 키
 #
 #JWT: 테스트용 시크릿
-# src/main/resources/application-test.yml
 
 server:
   port: 8080
