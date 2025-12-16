@@ -20,38 +20,32 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-      # 3. 테스트용 properties 파일 세팅 (CI에서만 사용)
-#      - name: Setup Test Properties
-#        run: |
-#          mkdir -p src/test/resources
-#          echo "${{ secrets.TEST_APPLICATION_PROPERTIES }}" > ./src/test/resources/application.properties
-#
-#      # 4. Gradle 테스트 수행 (test용 설정 사용)
-#      - name: Run Unit Tests
-#        run: |
-#          chmod +x ./gradlew
-#          ./gradlew clean test
 
-      # 5. Gradle Build (테스트 스킵, main/resources/application.yml 사용)
-#      - name: Build jar
-#        run: |
-#          chmod +x ./gradlew
-#          ./gradlew clean build -x test --no-daemon
+      # 3. application.yml 파일 세팅 (CI에서만 사용)
+      - name: Setup application.yml
+        run: |
+          mkdir -p src/main/resources
+          echo "${{ secrets.APPLICATION_YML }}" > src/main/resources/application.yml
 
-      # 6. Docker 이미지 빌드 (commit sha tag)
+      # 4. Gradle Build (테스트 스킵)
+      - name: Build jar
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build -x test --no-daemon
+
+      # 5. Docker 이미지 빌드 (commit sha 태그)
       - name: Docker build
         run: |
-          docker build \
-            -t ${{ secrets.DOCKER_USER }}/web-app:${{ github.sha }} .
+          docker build -t ${{ secrets.DOCKER_USER }}/web-app:${{ github.sha }} .
 
-      # 7. DockerHub 로그인
+      # 6. DockerHub 로그인
       - name: Docker login
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      # 8. Docker 이미지 Push
+      # 7. Docker 이미지 Push
       - name: Docker push
         run: |
           docker push ${{ secrets.DOCKER_USER }}/web-app:${{ github.sha }}
