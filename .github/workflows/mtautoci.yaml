@@ -1,4 +1,4 @@
-name: CI - Build & Push Image + Update Manifest Repo
+name: CI - Build & Push Image
 
 on:
   push:
@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. App Repo Checkout
-      - name: Checkout app repository
+      # 1. 소스 코드 체크아웃
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       # 2. JDK 21 설치
@@ -21,31 +21,27 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      # 3. application.yml 파일 세팅 (CI에서만 사용)
+      # 3. application.yml 세팅 (CI 전용)
       - name: Setup application.yml
         run: |
           mkdir -p src/main/resources
           echo "${{ secrets.APPLICATION_YML }}" > src/main/resources/application.yml
 
-      # 4. Gradle Build (테스트 스킵)
-      - name: Build jar
-        run: |
-          chmod +x ./gradlew
-          ./gradlew clean build -x test --no-daemon
-
-      # 5. Docker 이미지 빌드 (commit sha 태그)
+      # 4. Docker 이미지 빌드 (멀티스테이지 빌드 포함)
       - name: Docker build
         run: |
-          docker build -t ${{ secrets.DOCKER_USER }}/web-app:${{ github.sha }} .
+          docker build \
+            --build-arg APPLICATION_YML="${{ secrets.APPLICATION_YML }}" \
+            -t ${{ secrets.DOCKER_USER }}/web-app:${{ github.sha }} .
 
-      # 6. DockerHub 로그인
+      # 5. DockerHub 로그인
       - name: Docker login
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      # 7. Docker 이미지 Push
+      # 6. Docker 이미지 Push
       - name: Docker push
         run: |
           docker push ${{ secrets.DOCKER_USER }}/web-app:${{ github.sha }}
