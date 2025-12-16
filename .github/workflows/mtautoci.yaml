@@ -1,5 +1,4 @@
 name: CI - Build & Push Image + Update Manifest Repo
-
 on:
   push:
     branches:
