@@ -45,3 +45,28 @@ jobs:
       - name: Docker push
         run: |
           docker push ${{ secrets.DOCKER_USER }}/web-app:${{ github.sha }}
+
+      # 7. Manifest Repo Checkout (GitOps Repo)
+      - name: Checkout manifest repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ secrets.MANIFEST_REPO }} # ← 여기 Manifest Repo 주소
+          token: ${{ secrets.MANIFEST_REPO_TOKEN }}
+          path: manifests
+
+      # 8. kustomization.yaml image tag 업데이트 (overlays/dev 기준)
+      - name: Update k8s image tag
+        run: |
+          sed -i \
+          "s/newTag: .*/newTag: ${{ github.sha }}/" \
+          manifests/overlays/dev/kustomization.yaml
+
+      # 9. Manifest Repo Commit & Push
+      - name: Commit & Push manifest repo
+        run: |
+          cd manifests
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add overlays/dev/kustomization.yaml
+          git commit -m "chore(dev): update web-app image to ${{ github.sha }}"
+          git push
